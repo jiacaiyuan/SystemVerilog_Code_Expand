@@ -1,0 +1,42 @@
+//:$alu=5;
+//:$bru=10
+//:$abc = 15  
+//:$bcd = [1,2,3] ;
+//:$max = 3;
+
+//:for($i=0;$i<$max ;$i=$i+1){
+//:for($j=1;$j<$bru;$j=$j+1){
+//:$tmp = $j%3;
+//:$alu = $tmp + 100;
+   assign ${i} * ${j};
+   assign ${abc} + 1;
+   assign ${tmp} + 2;
+   assign ${alu}
+  //:if($tmp == $j) {
+   assign compare
+  //:}
+//:}
+//:}
+assign ${alu}
+
+//:if($alu > $bru) {
+   assign ${alu} > ${bru};
+//:   for($i=0;$i<10;$i=$i+1) {
+   assign ${i}
+   //:}
+//:elsif($alu == $bru) {
+   assign ${alu} = ${bru};
+//:   for($i=0;$i<10;$i=$i+1) {
+   assign ${i}
+   //:}
+//:}
+//:else {
+   assign ${alu} < ${bru};
+//:for($i=0;$i<10;$i=$i+1) {
+   assign ${i}
+   //:}
+//:}
+
+//:for($x=0;$x<5 ;$x++){
+assign ${x};
+//:}
