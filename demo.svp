@@ -1,15 +1,71 @@
+//DEMO variable
+//:$width = 16
+//:$depth = 8;
+wire [${width}-1:0] data = ${width}'b0;
+logic [31:0] buffer[${depth}];
+
+//:$name="alu"
+wire ${name}_vld = 0;
+
+//:$nam_q = ["alu","lsu","fsu"]
+//:for($i=0; $i<len($nam_q); $i=$i+1) {
+	assign ${nam_q[${i}]} = 1;
+//:}
+
+//:$test = [[1,2],[3,4],[5,6]]
+//:for($i=0;$i<3;$i=$i+1) {
+//:for($j=0;$j<2;$j=$j+1) {
+assign value_${test[${i}][${j}]} = 0;
+//:}
+//:}
+
+
+//DEMO: FOR
+//:$max = 2;
+//:for($i=0;$i<$max;$i=$i+1) {
+//:for($j=1;$j<3;$j++) {
+//:$var = $i*$j;
+	assign value_${var} = ${i} * ${j};
+//:}
+//:}
+
+//DEMO: IF
+//:$cmp_a = 3;
+//:$cmp_b = 5;
+//cond1:
+//:if($cmp_a < $cmp_b) {
+	assign if_match = a < b;
+//:}
+//cond2:
+//:if($cmp_a > $cmp_b) {
+	assign if_match = a > b;
+//:}
+//:else {
+	assign else_match = a < b;
+//:}
+//cond3:
+//:if($cmp_a > $cmp_b) {
+	assign if_match = a > b;
+//:elsif($cmp_a != $cmp_b) {
+	assign elsif_match1 = a != b;
+//:elsif($cmp_a < $cmp_b) {
+	assign elsif_match2 = a < b;
+//:else {
+	assign else_match = a = b;
+//:}
+
+
+
+//DEMO: variable overwrite 
+//DEMO: nested if or for
+
 //:$alu=5;
 //:$bru=10
-//:$abc = 15  
-//:$bcd = [1,2,3] ;
 //:$max = 3;
-
 //:for($i=0;$i<$max ;$i=$i+1){
 //:for($j=1;$j<$bru;$j=$j+1){
 //:$tmp = $j%3;
 //:$alu = $tmp + 100;
-   assign ${i} * ${j};
-   assign ${abc} + 1;
    assign ${tmp} + 2;
    assign ${alu}
   //:if($tmp == $j) {
@@ -17,7 +73,8 @@
   //:}
 //:}
 //:}
-assign ${alu}
+
+assign alu= ${alu}
 
 //:if($alu > $bru) {
    assign ${alu} > ${bru};
@@ -29,14 +86,9 @@ assign ${alu}
 //:   for($i=0;$i<10;$i=$i+1) {
    assign ${i}
    //:}
-//:}
 //:else {
    assign ${alu} < ${bru};
 //:for($i=0;$i<10;$i=$i+1) {
    assign ${i}
    //:}
-//:}
-
-//:for($x=0;$x<5 ;$x++){
-assign ${x};
 //:}
