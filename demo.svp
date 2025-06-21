@@ -1,3 +1,4 @@
+
 //DEMO variable
 //:$width = 16
 //:$depth = 8;
@@ -52,6 +53,34 @@ assign value_${test[${i}][${j}]} = 0;
 	assign elsif_match2 = a < b;
 //:else {
 	assign else_match = a = b;
+//:}
+
+
+
+
+//DEMO: IF condition
+//:$cmp_a = 3;
+//:$cmp_b = 5;
+//cond1:
+// + - * // % is all ok 
+//:if(($cmp_b + $cmp_a) == 8) {
+	assign if_match = cmp_a + cmp_b == 8;
+//:}
+//cond2:
+// > < >= <= != == is all ok
+// & && | || or and is ok
+//:if(($cmp_a!=5)&&($cmp_b !=3)) {
+	assign if_match = cmp_a !=0 and cmp_b !=0;
+//:}
+//cond3:
+// ~ ! not is all ok
+//:if(!($cmp_a!=3)) {
+	assign if_match = cmp_a ==3;
+//:}
+//cond4:
+//:$test = [[1,2],[3,4],[5,6]]
+//:if($test[0][0] == 1) {
+	assign test[0][0] = 1;
 //:}
 
 
