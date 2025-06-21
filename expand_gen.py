@@ -20,11 +20,18 @@ class CodeGenerator: #recursion process the line
         if self.debug:
             step = "    " * self.debug_tab
             self.debug_log.append(f"{step}{message}")
-    
+
     def eval_expr(self, expr, local_vars=None):
+        def replace_logical_ops(expr_str):
+            expr_str = re.sub(r'&&', ' and ', expr_str)
+            expr_str = re.sub(r'\|\|', ' or ', expr_str)
+            expr_str = re.sub(r'!(?!=)', ' not ', expr_str) # ! can replace != can't replace
+            expr_str = re.sub(r'~', ' not ', expr_str)
+            return expr_str
         if local_vars is None:
             local_vars = self.variables
         try:
+            expr = replace_logical_ops(expr)
             result = eval(expr, {"__builtins__": __builtins__}, local_vars) #direct calc
             self.log(f"Eval expr: '{expr}' -> {result}")
             return result
@@ -34,6 +41,7 @@ class CodeGenerator: #recursion process the line
                         expr) #replace ${var} to $var
             try:
                 #return eval(expr, {"__builtins__": None}, {})
+                expr = replace_logical_ops(expr)
                 result = eval(expr, {"__builtins__": __builtins__}, {})
                 self.log(f"Eval expr (after sub): '{expr}' -> {result}")
                 return result
