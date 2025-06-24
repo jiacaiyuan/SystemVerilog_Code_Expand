@@ -40,9 +40,9 @@ assign value_${test[${i}][${j}]} = 0;
 //cond2:
 //:if($cmp_a > $cmp_b) {
 	assign if_match = a > b;
-//:}
 //:else {
 	assign else_match = a < b;
+//:}
 //:}
 //cond3:
 //:if($cmp_a > $cmp_b) {
@@ -54,8 +54,9 @@ assign value_${test[${i}][${j}]} = 0;
 //:else {
 	assign else_match = a = b;
 //:}
-
-
+//:}
+//:}
+//:}
 
 
 //DEMO: IF condition
@@ -87,37 +88,54 @@ assign value_${test[${i}][${j}]} = 0;
 
 //DEMO: variable overwrite 
 //DEMO: nested if or for
-
-//:$alu=5;
+//:$alu = 5
 //:$bru=10
 //:$max = 3;
 //:for($i=0;$i<$max ;$i=$i+1){
 //:for($j=1;$j<$bru;$j=$j+1){
-//:$tmp = $j%3;
-//:$alu = $tmp + 100;
-   assign ${tmp} + 2;
-   assign ${alu}
-  //:if($tmp == $j) {
-   assign compare
-  //:}
+//:$alu = $j%3 + 100;
+   assign alu = ${alu} ;
+//:if($i == $j) {
+	assign if_match = ${i} == ${j};
+//:elsif($i == $j+1) {
+	assign elsif_match = ${i} = ${j} + 1;
+//:else {
+	assign else_match = ${i} != ${j};
+//:}
+//:}
+//:}
+
+
+//:}
+//:}
+  
+  
+  
 //:}
 //:}
 
 assign alu= ${alu}
 
+
+
 //:if($alu > $bru) {
    assign ${alu} > ${bru};
-//:   for($i=0;$i<10;$i=$i+1) {
+//:   for($i=0;$i<2;$i=$i+1) {
    assign ${i}
    //:}
-//:elsif($alu == $bru) {
-   assign ${alu} = ${bru};
-//:   for($i=0;$i<10;$i=$i+1) {
+   
+//:elsif($alu != $bru) {
+   assign ${alu} != ${bru};
+//:   for($i=0;$i<5;$i=$i+1) {
    assign ${i}
    //:}
 //:else {
    assign ${alu} < ${bru};
-//:for($i=0;$i<10;$i=$i+1) {
+//:for($i=0;$i<8;$i=$i+1) {
    assign ${i}
    //:}
 //:}
+//:}
+//:}
+
+finish 

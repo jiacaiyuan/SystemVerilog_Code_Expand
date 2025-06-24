@@ -239,80 +239,136 @@ class ForBlock: #for block process
             generator.variables[var_name] = generator.eval_expr(step_expr)
 
 
+
 class IfBlock:
     def parse(self, parent_generator, lines, start_index): #process(if/elsif/else)
         branches = []
         current_branch = None
         index = start_index
         parent_generator.log("Processing IF block")
+        found_end = False
+        
         while index < len(lines):
             stripped = lines[index].strip()
             cmd = stripped[3:].strip() if stripped.startswith("//:") else ""
-            if cmd.startswith("if("): #if branch
-                match = re.match(r'if\((.+)\)\s*\{', cmd)
-                if match:
+            if cmd.startswith("if(") or cmd.startswith("elsif(") or cmd.startswith("else"):
+                if current_branch:
+                    branches.append(current_branch) #if current branch has do it
+                    current_branch = None
+                #create new branch 
+                if cmd.startswith("if("):#if branch
+                    match = re.match(r'if\((.+)\)\s*\{', cmd)
+                    if not match:
+                        error_msg = f"Invalid if directive: {cmd}"
+                        parent_generator.log(f"ERROR: {error_msg}")
+                        raise ValueError(error_msg)
                     condition = match.group(1).strip()
                     current_branch = {"condition": condition, "lines": []}
-                    branches.append(current_branch)
                     parent_generator.log(f"IF condition: {condition}")
-                    index += 1
-                    continue
-            elif cmd.startswith("elsif("): #elsif branch
-                match = re.match(r'elsif\((.+)\)\s*\{', cmd)
-                if match:
+                
+                elif cmd.startswith("elsif("): #elsif branch
+                    match = re.match(r'elsif\((.+)\)\s*\{', cmd)
+                    if not match:
+                        error_msg = f"Invalid elsif directive: {cmd}"
+                        parent_generator.log(f"ERROR: {error_msg}")
+                        raise ValueError(error_msg)
                     condition = match.group(1).strip()
                     current_branch = {"condition": condition, "lines": []}
-                    branches.append(current_branch)
                     parent_generator.log(f"ELSIF condition: {condition}")
-                    index += 1
-                    continue
-            elif cmd.startswith("else"): #else branch
-                current_branch = {"condition": "True", "lines": []}
-                branches.append(current_branch)
-                parent_generator.log("ELSE branch")
-                index += 1
+                
+                elif cmd.startswith("else"):
+                    current_branch = {"condition": "True", "lines": []}
+                    parent_generator.log("ELSE branch")
+                index += 1 #mov to next lane to collect info 
                 continue
-            if cmd == "}": #branch block is ok
+            
+            #branch is ok
+            if stripped == "//:}":
+                if current_branch:
+                    branches.append(current_branch)
+                    current_branch = None
                 parent_generator.log("End of IF block")
+                found_end = True
+                index += 1 
                 break
-            if current_branch is not None:
-                current_branch["lines"].append(lines[index])
+            if current_branch is not None: #collect branch
+                # has nested info 
+                if stripped.startswith("//:") and (
+                    stripped[3:].strip().startswith("for(") or 
+                    stripped[3:].strip().startswith("if(") or 
+                    stripped[3:].strip().startswith("elsif(")):
+                    nested_depth = 1
+                    current_branch["lines"].append(lines[index])
+                    index += 1
+                    #collect nested info 
+                    while index < len(lines) and nested_depth > 0:
+                        nested_stripped = lines[index].strip()
+                        #nested begin 
+                        if nested_stripped.startswith("//:") and (
+                            nested_stripped[3:].strip().startswith("for(") or 
+                            nested_stripped[3:].strip().startswith("if(") or 
+                            nested_stripped[3:].strip().startswith("elsif(")
+                        ):
+                            nested_depth += 1
+                        #nested end
+                        if nested_stripped == "//:}":
+                            nested_depth -= 1
+                        current_branch["lines"].append(lines[index])
+                        index += 1
+                    if nested_depth > 0: #check nested is fine
+                        error_msg = f"Unclosed nested block in if branch starting at line {start_index}"
+                        parent_generator.log(f"ERROR: {error_msg}")
+                        raise ValueError(error_msg)
+                    
+                    continue
+                current_branch["lines"].append(lines[index]) #append normal lane
+            
             index += 1
+        if current_branch:
+            branches.append(current_branch)
+        
+        #check end 
+        if not found_end:
+            error_msg = f"Missing '//:}}' for if block starting at line {start_index}"
+            parent_generator.log(f"ERROR: {error_msg}")
+            raise ValueError(error_msg)
+        if not branches:
+            parent_generator.log("No branches found in IF block")
+            return index, []
+        #process branch 
         generator = CodeGenerator(parent_vars=parent_generator.variables,
-                                  debug=parent_generator.debug)#get if block code generator
-        generator.debug_log = parent_generator.debug_log  # 共享调试日志
+                                  debug=parent_generator.debug)
+        generator.debug_log = parent_generator.debug_log
         generator.debug_tab = parent_generator.debug_tab + 1
         executed = False
         output = []
+        
         for branch in branches:
-            if not executed: #only before condition not match,check other branch("else" process)
+            if not executed:
                 condition = branch["condition"]
                 condition_result = generator.eval_expr(condition)
                 generator.log(f"Evaluating condition: {condition} -> {condition_result}")
-                if condition_result:#check the condition
+                
+                if condition_result:
                     executed = True
                     generator.log("Condition is True, executing branch")
-                    body_generator = CodeGenerator( parent_vars=generator.variables,
-                                                    debug=parent_generator.debug)
+                    body_generator = CodeGenerator(parent_vars=generator.variables,
+                                                  debug=parent_generator.debug)
                     body_generator.debug_log = parent_generator.debug_log
-                    body_generator.debug_tag = generator.debug_tab + 1
-                    body_generator.process_lines(branch["lines"]) #generate the code
+                    body_generator.debug_tab = generator.debug_tab + 1
+                    body_generator.process_lines(branch["lines"])
                     output.extend(body_generator.output_lines)
                     generator.log(f"Branch generated {len(body_generator.output_lines)} lines")
                     generator.variables.update(body_generator.variables)
                 else:
                     generator.log("Condition is False, skipping branch")
-            else: #if condition not match, just process the variable not generate code
+            else:
                 generator.log("Skipping branch (previous condition was true)")
-                #for line in branch["lines"]:
-                #    stripped = line.strip()
-                #    if stripped.startswith("//:$"):
-                #        temp_generator = CodeGenerator(parent_vars=generator.variables)
-                #        temp_generator.process_assignment(stripped[3:].strip())
-                #        generator.variables.update(temp_generator.variables)
+        
         if not executed:
             generator.log("No branch executed in IF block")
-        parent_generator.variables.update(generator.variables) #update parent variable
+        
+        parent_generator.variables.update(generator.variables)
         parent_generator.debug_tab = generator.debug_tab - 1
         return index, output
 
