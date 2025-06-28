@@ -1,0 +1,1979 @@
+Starting code generation
+Initial variables: {}
+Processing line 0: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 1: '//DEMO variable'
+Replace vars: '//DEMO variable' -> '//DEMO variable'
+Added output line: '//DEMO variable'
+Processing line 2: '//:$width = 2*8'
+Eval expr: '2*8' -> 16
+Assignment: $width = 16 (type: int)
+Variables now: {'width': 16}
+Processing line 3: '//:$depth = 8;'
+Eval expr: '8' -> 8
+Assignment: $depth = 8 (type: int)
+Variables now: {'width': 16, 'depth': 8}
+Processing line 4: '//:$size = 2*$depth;'
+Eval expr: '2*8' -> 16
+Assignment: $size = 16 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16}
+Processing line 5: 'wire [${width}-1:0] data = ${width}'b0;'
+Replace: $width -> 16
+Replace: $width -> 16
+Replace vars: 'wire [${width}-1:0] data = ${width}'b0;' -> 'wire [16-1:0] data = 16'b0;'
+Added output line: 'wire [16-1:0] data = 16'b0;'
+Processing line 6: 'logic [31:0] buffer[${depth}][${size}];'
+Replace: $depth -> 8
+Replace: $size -> 16
+Replace vars: 'logic [31:0] buffer[${depth}][${size}];' -> 'logic [31:0] buffer[8][16];'
+Added output line: 'logic [31:0] buffer[8][16];'
+Processing line 7: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 8: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 9: '//:$name="alu"'
+Eval expr: '"alu"' -> alu
+Assignment: $name = alu (type: str)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu'}
+Processing line 10: 'wire ${name}_vld = 0;'
+Replace: $name -> alu
+Replace vars: 'wire ${name}_vld = 0;' -> 'wire alu_vld = 0;'
+Added output line: 'wire alu_vld = 0;'
+Processing line 11: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 12: '//:$nam_q = ["alu","lsu","fsu"]'
+Eval expr: '["alu","lsu","fsu"]' -> ['alu', 'lsu', 'fsu']
+Assignment: $nam_q = ['alu', 'lsu', 'fsu'] (type: list)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu']}
+Processing line 13: '//:for($i=0; $i<len($nam_q); $i=$i+1) {'
+Found FOR block
+FOR loop: $i = 0; $i<len($nam_q); $i=$i+1
+    Eval expr: '0' -> 0
+    Initialized loop variable $i = 0
+    Eval expr: '0<len(['alu', 'lsu', 'fsu'])' -> True
+    Loop iteration #1, condition '$i<len($nam_q)' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0}
+        Processing line 0: 'assign ${nam_q[${i}]} = 1;'
+        Eval expr: '0' -> 0
+        Indexing: $nam_q[${i}] -> alu (at index 0)
+        Replace: $nam_q[${i}] -> alu
+        Replace vars: '	assign ${nam_q[${i}]} = 1;' -> '	assign alu = 1;'
+        Added output line: '	assign alu = 1;'
+    Body generated 1 lines
+    Eval expr: '0+1' -> 1
+    After step: $i = 1
+    Eval expr: '1<len(['alu', 'lsu', 'fsu'])' -> True
+    Loop iteration #2, condition '$i<len($nam_q)' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1}
+        Processing line 0: 'assign ${nam_q[${i}]} = 1;'
+        Eval expr: '1' -> 1
+        Indexing: $nam_q[${i}] -> lsu (at index 1)
+        Replace: $nam_q[${i}] -> lsu
+        Replace vars: '	assign ${nam_q[${i}]} = 1;' -> '	assign lsu = 1;'
+        Added output line: '	assign lsu = 1;'
+    Body generated 1 lines
+    Eval expr: '1+1' -> 2
+    After step: $i = 2
+    Eval expr: '2<len(['alu', 'lsu', 'fsu'])' -> True
+    Loop iteration #3, condition '$i<len($nam_q)' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2}
+        Processing line 0: 'assign ${nam_q[${i}]} = 1;'
+        Eval expr: '2' -> 2
+        Indexing: $nam_q[${i}] -> fsu (at index 2)
+        Replace: $nam_q[${i}] -> fsu
+        Replace vars: '	assign ${nam_q[${i}]} = 1;' -> '	assign fsu = 1;'
+        Added output line: '	assign fsu = 1;'
+    Body generated 1 lines
+    Eval expr: '2+1' -> 3
+    After step: $i = 3
+    Eval expr: '3<len(['alu', 'lsu', 'fsu'])' -> False
+    FOR loop completed after 3 iterations
+    Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3}
+FOR block processed, added 3 lines
+Processing line 16: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 17: '//:$test = [[1,2],[3,4],[5,6]]'
+Eval expr: '[[1,2],[3,4],[5,6]]' -> [[1, 2], [3, 4], [5, 6]]
+Assignment: $test = [[1, 2], [3, 4], [5, 6]] (type: list)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3, 'test': [[1, 2], [3, 4], [5, 6]]}
+Processing line 18: '//:for($i=0;$i<3;$i=$i+1) {'
+Found FOR block
+FOR loop: $i = 0; $i<3; $i=$i+1
+Eval expr: '0' -> 0
+Initialized loop variable $i = 0
+Eval expr: '0<3' -> True
+Loop iteration #1, condition '$i<3' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]]}
+    Processing line 0: '//:for($j=0;$j<2;$j=$j+1) {'
+    Found FOR block
+    FOR loop: $j = 0; $j<2; $j=$j+1
+        Eval expr: '0' -> 0
+        Initialized loop variable $j = 0
+        Eval expr: '0<2' -> True
+        Loop iteration #1, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 0}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '0' -> 0
+            Indexing: $test[${i}][${j}] -> [1, 2] (at index 0)
+            Eval expr: '0' -> 0
+            Indexing: $test[${i}][${j}] -> 1 (at index 0)
+            Replace: $test[${i}][${j}] -> 1
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_1 = 0;'
+            Added output line: 'assign value_1 = 0;'
+        Body generated 1 lines
+        Eval expr: '0+1' -> 1
+        After step: $j = 1
+        Eval expr: '1<2' -> True
+        Loop iteration #2, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 1}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '0' -> 0
+            Indexing: $test[${i}][${j}] -> [1, 2] (at index 0)
+            Eval expr: '1' -> 1
+            Indexing: $test[${i}][${j}] -> 2 (at index 1)
+            Replace: $test[${i}][${j}] -> 2
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_2 = 0;'
+            Added output line: 'assign value_2 = 0;'
+        Body generated 1 lines
+        Eval expr: '1+1' -> 2
+        After step: $j = 2
+        Eval expr: '2<2' -> False
+        FOR loop completed after 2 iterations
+        Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 2}
+FOR block processed, added 2 lines
+Body generated 2 lines
+Eval expr: '0+1' -> 1
+After step: $i = 1
+Eval expr: '1<3' -> True
+Loop iteration #2, condition '$i<3' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]]}
+    Processing line 0: '//:for($j=0;$j<2;$j=$j+1) {'
+    Found FOR block
+    FOR loop: $j = 0; $j<2; $j=$j+1
+        Eval expr: '0' -> 0
+        Initialized loop variable $j = 0
+        Eval expr: '0<2' -> True
+        Loop iteration #1, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 0}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '1' -> 1
+            Indexing: $test[${i}][${j}] -> [3, 4] (at index 1)
+            Eval expr: '0' -> 0
+            Indexing: $test[${i}][${j}] -> 3 (at index 0)
+            Replace: $test[${i}][${j}] -> 3
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_3 = 0;'
+            Added output line: 'assign value_3 = 0;'
+        Body generated 1 lines
+        Eval expr: '0+1' -> 1
+        After step: $j = 1
+        Eval expr: '1<2' -> True
+        Loop iteration #2, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 1}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '1' -> 1
+            Indexing: $test[${i}][${j}] -> [3, 4] (at index 1)
+            Eval expr: '1' -> 1
+            Indexing: $test[${i}][${j}] -> 4 (at index 1)
+            Replace: $test[${i}][${j}] -> 4
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_4 = 0;'
+            Added output line: 'assign value_4 = 0;'
+        Body generated 1 lines
+        Eval expr: '1+1' -> 2
+        After step: $j = 2
+        Eval expr: '2<2' -> False
+        FOR loop completed after 2 iterations
+        Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 2}
+FOR block processed, added 2 lines
+Body generated 2 lines
+Eval expr: '1+1' -> 2
+After step: $i = 2
+Eval expr: '2<3' -> True
+Loop iteration #3, condition '$i<3' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]]}
+    Processing line 0: '//:for($j=0;$j<2;$j=$j+1) {'
+    Found FOR block
+    FOR loop: $j = 0; $j<2; $j=$j+1
+        Eval expr: '0' -> 0
+        Initialized loop variable $j = 0
+        Eval expr: '0<2' -> True
+        Loop iteration #1, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 0}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '2' -> 2
+            Indexing: $test[${i}][${j}] -> [5, 6] (at index 2)
+            Eval expr: '0' -> 0
+            Indexing: $test[${i}][${j}] -> 5 (at index 0)
+            Replace: $test[${i}][${j}] -> 5
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_5 = 0;'
+            Added output line: 'assign value_5 = 0;'
+        Body generated 1 lines
+        Eval expr: '0+1' -> 1
+        After step: $j = 1
+        Eval expr: '1<2' -> True
+        Loop iteration #2, condition '$j<2' is True
+        Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 1}
+            Processing line 0: 'assign value_${test[${i}][${j}]} = 0;'
+            Eval expr: '2' -> 2
+            Indexing: $test[${i}][${j}] -> [5, 6] (at index 2)
+            Eval expr: '1' -> 1
+            Indexing: $test[${i}][${j}] -> 6 (at index 1)
+            Replace: $test[${i}][${j}] -> 6
+            Replace vars: 'assign value_${test[${i}][${j}]} = 0;' -> 'assign value_6 = 0;'
+            Added output line: 'assign value_6 = 0;'
+        Body generated 1 lines
+        Eval expr: '1+1' -> 2
+        After step: $j = 2
+        Eval expr: '2<2' -> False
+        FOR loop completed after 2 iterations
+        Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'j': 2}
+FOR block processed, added 2 lines
+Body generated 2 lines
+Eval expr: '2+1' -> 3
+After step: $i = 3
+Eval expr: '3<3' -> False
+FOR loop completed after 3 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3, 'test': [[1, 2], [3, 4], [5, 6]]}
+FOR block processed, added 6 lines
+Processing line 23: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 24: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 25: '//DEMO: FOR'
+Replace vars: '//DEMO: FOR' -> '//DEMO: FOR'
+Added output line: '//DEMO: FOR'
+Processing line 26: '//:$max = 2;'
+Eval expr: '2' -> 2
+Assignment: $max = 2 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2}
+Processing line 27: '//:for($i=0;$i<$max;$i=$i+1) {'
+Found FOR block
+FOR loop: $i = 0; $i<$max; $i=$i+1
+Eval expr: '0' -> 0
+Initialized loop variable $i = 0
+Eval expr: '0<2' -> True
+Loop iteration #1, condition '$i<$max' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2}
+Processing line 0: '//:for($j=1;$j<3;$j++) {'
+Found FOR block
+FOR loop: $j = 1; $j<3; $j = $j + 1
+    Eval expr: '1' -> 1
+    Initialized loop variable $j = 1
+    Eval expr: '1<3' -> True
+    Loop iteration #1, condition '$j<3' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 1}
+        Processing line 0: '//:$var = $i*$j;'
+        Eval expr: '0*1' -> 0
+        Assignment: $var = 0 (type: int)
+        Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 1, 'var': 0}
+        Processing line 1: 'assign value_${var} = ${i} * ${j};'
+        Replace: $var -> 0
+        Replace: $i -> 0
+        Replace: $j -> 1
+        Replace vars: '	assign value_${var} = ${i} * ${j};' -> '	assign value_0 = 0 * 1;'
+        Added output line: '	assign value_0 = 0 * 1;'
+    Body generated 1 lines
+    Eval expr: '1 + 1' -> 2
+    After step: $j = 2
+    Eval expr: '2<3' -> True
+    Loop iteration #2, condition '$j<3' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 2}
+        Processing line 0: '//:$var = $i*$j;'
+        Eval expr: '0*2' -> 0
+        Assignment: $var = 0 (type: int)
+        Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 2, 'var': 0}
+        Processing line 1: 'assign value_${var} = ${i} * ${j};'
+        Replace: $var -> 0
+        Replace: $i -> 0
+        Replace: $j -> 2
+        Replace vars: '	assign value_${var} = ${i} * ${j};' -> '	assign value_0 = 0 * 2;'
+        Added output line: '	assign value_0 = 0 * 2;'
+    Body generated 1 lines
+    Eval expr: '2 + 1' -> 3
+    After step: $j = 3
+    Eval expr: '3<3' -> False
+    FOR loop completed after 2 iterations
+    Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 3}
+FOR block processed, added 2 lines
+Body generated 2 lines
+Eval expr: '0+1' -> 1
+After step: $i = 1
+Eval expr: '1<2' -> True
+Loop iteration #2, condition '$i<$max' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2}
+Processing line 0: '//:for($j=1;$j<3;$j++) {'
+Found FOR block
+FOR loop: $j = 1; $j<3; $j = $j + 1
+    Eval expr: '1' -> 1
+    Initialized loop variable $j = 1
+    Eval expr: '1<3' -> True
+    Loop iteration #1, condition '$j<3' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 1}
+        Processing line 0: '//:$var = $i*$j;'
+        Eval expr: '1*1' -> 1
+        Assignment: $var = 1 (type: int)
+        Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 1, 'var': 1}
+        Processing line 1: 'assign value_${var} = ${i} * ${j};'
+        Replace: $var -> 1
+        Replace: $i -> 1
+        Replace: $j -> 1
+        Replace vars: '	assign value_${var} = ${i} * ${j};' -> '	assign value_1 = 1 * 1;'
+        Added output line: '	assign value_1 = 1 * 1;'
+    Body generated 1 lines
+    Eval expr: '1 + 1' -> 2
+    After step: $j = 2
+    Eval expr: '2<3' -> True
+    Loop iteration #2, condition '$j<3' is True
+    Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 2}
+        Processing line 0: '//:$var = $i*$j;'
+        Eval expr: '1*2' -> 2
+        Assignment: $var = 2 (type: int)
+        Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 2, 'var': 2}
+        Processing line 1: 'assign value_${var} = ${i} * ${j};'
+        Replace: $var -> 2
+        Replace: $i -> 1
+        Replace: $j -> 2
+        Replace vars: '	assign value_${var} = ${i} * ${j};' -> '	assign value_2 = 1 * 2;'
+        Added output line: '	assign value_2 = 1 * 2;'
+    Body generated 1 lines
+    Eval expr: '2 + 1' -> 3
+    After step: $j = 3
+    Eval expr: '3<3' -> False
+    FOR loop completed after 2 iterations
+    Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'j': 3}
+FOR block processed, added 2 lines
+Body generated 2 lines
+Eval expr: '1+1' -> 2
+After step: $i = 2
+Eval expr: '2<2' -> False
+FOR loop completed after 2 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2}
+FOR block processed, added 4 lines
+Processing line 33: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 34: '//DEMO: IF'
+Replace vars: '//DEMO: IF' -> '//DEMO: IF'
+Added output line: '//DEMO: IF'
+Processing line 35: '//:$cmp_a = 3;'
+Eval expr: '3' -> 3
+Assignment: $cmp_a = 3 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3}
+Processing line 36: '//:$cmp_b = 5;'
+Eval expr: '5' -> 5
+Assignment: $cmp_b = 5 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5}
+Processing line 37: '//cond1:'
+Replace vars: '//cond1:' -> '//cond1:'
+Added output line: '//cond1:'
+Processing line 38: '//:if($cmp_a < $cmp_b) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $cmp_a < $cmp_b
+Eval expr: '3 < 5' -> True
+Evaluating condition: $cmp_a < $cmp_b -> True
+Condition is True, executing branch
+Processing line 0: 'assign if_match = a < b;'
+Replace vars: '	assign if_match = a < b;' -> '	assign if_match = a < b;'
+Added output line: '	assign if_match = a < b;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 41: '//cond2:'
+Replace vars: '//cond2:' -> '//cond2:'
+Added output line: '//cond2:'
+Processing line 42: '//:if($cmp_a > $cmp_b) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $cmp_a > $cmp_b
+ELSE branch
+Eval expr: '3 > 5' -> False
+Evaluating condition: $cmp_a > $cmp_b -> False
+Condition is False, skipping branch
+Eval expr: 'True' -> True
+Evaluating condition: True -> True
+Condition is True, executing branch
+Processing line 0: 'assign else_match = a < b;'
+Replace vars: '	assign else_match = a < b;' -> '	assign else_match = a < b;'
+Added output line: '	assign else_match = a < b;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 47: '//:}'
+Processing line 48: '//cond3:'
+Replace vars: '//cond3:' -> '//cond3:'
+Added output line: '//cond3:'
+Processing line 49: '//:if($cmp_a > $cmp_b) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $cmp_a > $cmp_b
+ELSIF condition: $cmp_a != $cmp_b
+ELSIF condition: $cmp_a < $cmp_b
+ELSE branch
+Eval expr: '3 > 5' -> False
+Evaluating condition: $cmp_a > $cmp_b -> False
+Condition is False, skipping branch
+Eval expr: '3 != 5' -> True
+Evaluating condition: $cmp_a != $cmp_b -> True
+Condition is True, executing branch
+Processing line 0: 'assign elsif_match1 = a != b;'
+Replace vars: '	assign elsif_match1 = a != b;' -> '	assign elsif_match1 = a != b;'
+Added output line: '	assign elsif_match1 = a != b;'
+Branch generated 1 lines
+Skipping branch (previous condition was true)
+Skipping branch (previous condition was true)
+IF block processed, added 1 lines
+Processing line 58: '//:}'
+Processing line 59: '//:}'
+Processing line 60: '//:}'
+Processing line 61: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 62: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 63: '//DEMO: IF condition'
+Replace vars: '//DEMO: IF condition' -> '//DEMO: IF condition'
+Added output line: '//DEMO: IF condition'
+Processing line 64: '//:$cmp_a = 3;'
+Eval expr: '3' -> 3
+Assignment: $cmp_a = 3 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5}
+Processing line 65: '//:$cmp_b = 5;'
+Eval expr: '5' -> 5
+Assignment: $cmp_b = 5 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5}
+Processing line 66: '//cond1:'
+Replace vars: '//cond1:' -> '//cond1:'
+Added output line: '//cond1:'
+Processing line 67: '// + - * // % is all ok'
+Replace vars: '// + - * // % is all ok ' -> '// + - * // % is all ok '
+Added output line: '// + - * // % is all ok '
+Processing line 68: '//:if(($cmp_b + $cmp_a) == 8) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: ($cmp_b + $cmp_a) == 8
+Eval expr: '(5 + 3) == 8' -> True
+Evaluating condition: ($cmp_b + $cmp_a) == 8 -> True
+Condition is True, executing branch
+Processing line 0: 'assign if_match = cmp_a + cmp_b == 8;'
+Replace vars: '	assign if_match = cmp_a + cmp_b == 8;' -> '	assign if_match = cmp_a + cmp_b == 8;'
+Added output line: '	assign if_match = cmp_a + cmp_b == 8;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 71: '//cond2:'
+Replace vars: '//cond2:' -> '//cond2:'
+Added output line: '//cond2:'
+Processing line 72: '// > < >= <= != == is all ok'
+Replace vars: '// > < >= <= != == is all ok' -> '// > < >= <= != == is all ok'
+Added output line: '// > < >= <= != == is all ok'
+Processing line 73: '// & && | || or and is ok'
+Replace vars: '// & && | || or and is ok' -> '// & && | || or and is ok'
+Added output line: '// & && | || or and is ok'
+Processing line 74: '//:if(($cmp_a!=5)&&($cmp_b !=3)) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: ($cmp_a!=5)&&($cmp_b !=3)
+Eval expr: '(3!=5) and (5 !=3)' -> True
+Evaluating condition: ($cmp_a!=5)&&($cmp_b !=3) -> True
+Condition is True, executing branch
+Processing line 0: 'assign if_match = cmp_a !=5 and cmp_b !=3;'
+Replace vars: '	assign if_match = cmp_a !=5 and cmp_b !=3;' -> '	assign if_match = cmp_a !=5 and cmp_b !=3;'
+Added output line: '	assign if_match = cmp_a !=5 and cmp_b !=3;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 77: '//cond3:'
+Replace vars: '//cond3:' -> '//cond3:'
+Added output line: '//cond3:'
+Processing line 78: '// ~ ! not is all ok'
+Replace vars: '// ~ ! not is all ok' -> '// ~ ! not is all ok'
+Added output line: '// ~ ! not is all ok'
+Processing line 79: '//:if(!($cmp_a!=3)) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: !($cmp_a!=3)
+Eval expr: ' not (3!=3)' -> True
+Evaluating condition: !($cmp_a!=3) -> True
+Condition is True, executing branch
+Processing line 0: 'assign if_match = cmp_a ==3;'
+Replace vars: '	assign if_match = cmp_a ==3;' -> '	assign if_match = cmp_a ==3;'
+Added output line: '	assign if_match = cmp_a ==3;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 82: '//cond4:'
+Replace vars: '//cond4:' -> '//cond4:'
+Added output line: '//cond4:'
+Processing line 83: '//:$test = [[1,2],[3,4],[5,6]]'
+Eval expr: '[[1,2],[3,4],[5,6]]' -> [[1, 2], [3, 4], [5, 6]]
+Assignment: $test = [[1, 2], [3, 4], [5, 6]] (type: list)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5}
+Processing line 84: '//:if($test[0][0] == 1) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $test[0][0] == 1
+Eval expr: '[[1, 2], [3, 4], [5, 6]][0][0] == 1' -> True
+Evaluating condition: $test[0][0] == 1 -> True
+Condition is True, executing branch
+Processing line 0: 'assign test[0][0] = 1;'
+Replace vars: '	assign test[0][0] = 1;' -> '	assign test[0][0] = 1;'
+Added output line: '	assign test[0][0] = 1;'
+Branch generated 1 lines
+IF block processed, added 1 lines
+Processing line 87: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 88: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 89: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 90: '//DEMO: variable overwrite'
+Replace vars: '//DEMO: variable overwrite ' -> '//DEMO: variable overwrite '
+Added output line: '//DEMO: variable overwrite '
+Processing line 91: '//DEMO: nested if or for'
+Replace vars: '//DEMO: nested if or for' -> '//DEMO: nested if or for'
+Added output line: '//DEMO: nested if or for'
+Processing line 92: '//:$alu = 5'
+Eval expr: '5' -> 5
+Assignment: $alu = 5 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5}
+Processing line 93: '//:$bru=10'
+Eval expr: '10' -> 10
+Assignment: $bru = 10 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 2, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 94: '//:$max = 3;'
+Eval expr: '3' -> 3
+Assignment: $max = 3 (type: int)
+Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 95: '//:for($i=0;$i<$max ;$i=$i+1){'
+Found FOR block
+FOR loop: $i = 0; $i<$max; $i=$i+1
+Eval expr: '0' -> 0
+Initialized loop variable $i = 0
+Eval expr: '0<3' -> True
+Loop iteration #1, condition '$i<$max' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: '//:for($j=1;$j<$bru;$j=$j+1){'
+Found FOR block
+FOR loop: $j = 1; $j<$bru; $j=$j+1
+Eval expr: '1' -> 1
+Initialized loop variable $j = 1
+Eval expr: '1<10' -> True
+Loop iteration #1, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 1}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '1%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 1}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 1' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 1+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 1
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 1;'
+            Added output line: '	assign else_match = 0 != 1;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '1+1' -> 2
+After step: $j = 2
+Eval expr: '2<10' -> True
+Loop iteration #2, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 2}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '2%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 2}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 2' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 2+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 2
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 2;'
+            Added output line: '	assign else_match = 0 != 2;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '2+1' -> 3
+After step: $j = 3
+Eval expr: '3<10' -> True
+Loop iteration #3, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 3}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '3%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 3}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 3' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 3+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 3
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 3;'
+            Added output line: '	assign else_match = 0 != 3;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '3+1' -> 4
+After step: $j = 4
+Eval expr: '4<10' -> True
+Loop iteration #4, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 4}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '4%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 4}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 4' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 4+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 4
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 4;'
+            Added output line: '	assign else_match = 0 != 4;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '4+1' -> 5
+After step: $j = 5
+Eval expr: '5<10' -> True
+Loop iteration #5, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 5}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '5%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 5}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 5' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 5+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 5
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 5;'
+            Added output line: '	assign else_match = 0 != 5;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '5+1' -> 6
+After step: $j = 6
+Eval expr: '6<10' -> True
+Loop iteration #6, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 6}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '6%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 6}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 6' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 6+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 6
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 6;'
+            Added output line: '	assign else_match = 0 != 6;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '6+1' -> 7
+After step: $j = 7
+Eval expr: '7<10' -> True
+Loop iteration #7, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 7}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '7%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 7}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 7' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 7+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 7
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 7;'
+            Added output line: '	assign else_match = 0 != 7;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '7+1' -> 8
+After step: $j = 8
+Eval expr: '8<10' -> True
+Loop iteration #8, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 8}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '8%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 8}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 8' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 8+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 8
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 8;'
+            Added output line: '	assign else_match = 0 != 8;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '8+1' -> 9
+After step: $j = 9
+Eval expr: '9<10' -> True
+Loop iteration #9, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 9}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '9%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 9}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '0 == 9' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '0 == 9+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 0
+            Replace: $j -> 9
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 0 != 9;'
+            Added output line: '	assign else_match = 0 != 9;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '9+1' -> 10
+After step: $j = 10
+Eval expr: '10<10' -> False
+FOR loop completed after 9 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 10}
+FOR block processed, added 36 lines
+Body generated 36 lines
+Eval expr: '0+1' -> 1
+After step: $i = 1
+Eval expr: '1<3' -> True
+Loop iteration #2, condition '$i<$max' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: '//:for($j=1;$j<$bru;$j=$j+1){'
+Found FOR block
+FOR loop: $j = 1; $j<$bru; $j=$j+1
+Eval expr: '1' -> 1
+Initialized loop variable $j = 1
+Eval expr: '1<10' -> True
+Loop iteration #1, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 1}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '1%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 1}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 1' -> True
+        Evaluating condition: $i == $j -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign if_match = ${i} == ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 1
+            Replace vars: '	assign if_match = ${i} == ${j};' -> '	assign if_match = 1 == 1;'
+            Added output line: '	assign if_match = 1 == 1;'
+        Branch generated 1 lines
+        Skipping branch (previous condition was true)
+        Skipping branch (previous condition was true)
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '1+1' -> 2
+After step: $j = 2
+Eval expr: '2<10' -> True
+Loop iteration #2, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 2}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '2%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 2}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 2' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 2+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 2
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 2;'
+            Added output line: '	assign else_match = 1 != 2;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '2+1' -> 3
+After step: $j = 3
+Eval expr: '3<10' -> True
+Loop iteration #3, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 3}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '3%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 3}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 3' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 3+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 3
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 3;'
+            Added output line: '	assign else_match = 1 != 3;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '3+1' -> 4
+After step: $j = 4
+Eval expr: '4<10' -> True
+Loop iteration #4, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 4}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '4%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 4}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 4' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 4+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 4
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 4;'
+            Added output line: '	assign else_match = 1 != 4;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '4+1' -> 5
+After step: $j = 5
+Eval expr: '5<10' -> True
+Loop iteration #5, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 5}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '5%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 5}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 5' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 5+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 5
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 5;'
+            Added output line: '	assign else_match = 1 != 5;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '5+1' -> 6
+After step: $j = 6
+Eval expr: '6<10' -> True
+Loop iteration #6, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 6}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '6%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 6}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 6' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 6+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 6
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 6;'
+            Added output line: '	assign else_match = 1 != 6;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '6+1' -> 7
+After step: $j = 7
+Eval expr: '7<10' -> True
+Loop iteration #7, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 7}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '7%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 7}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 7' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 7+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 7
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 7;'
+            Added output line: '	assign else_match = 1 != 7;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '7+1' -> 8
+After step: $j = 8
+Eval expr: '8<10' -> True
+Loop iteration #8, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 8}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '8%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 8}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 8' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 8+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 8
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 8;'
+            Added output line: '	assign else_match = 1 != 8;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '8+1' -> 9
+After step: $j = 9
+Eval expr: '9<10' -> True
+Loop iteration #9, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 9}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '9%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 9}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '1 == 9' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '1 == 9+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 1
+            Replace: $j -> 9
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 1 != 9;'
+            Added output line: '	assign else_match = 1 != 9;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '9+1' -> 10
+After step: $j = 10
+Eval expr: '10<10' -> False
+FOR loop completed after 9 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 10}
+FOR block processed, added 36 lines
+Body generated 36 lines
+Eval expr: '1+1' -> 2
+After step: $i = 2
+Eval expr: '2<3' -> True
+Loop iteration #3, condition '$i<$max' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: '//:for($j=1;$j<$bru;$j=$j+1){'
+Found FOR block
+FOR loop: $j = 1; $j<$bru; $j=$j+1
+Eval expr: '1' -> 1
+Initialized loop variable $j = 1
+Eval expr: '1<10' -> True
+Loop iteration #1, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 1}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '1%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 1}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 1' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 1+1' -> True
+        Evaluating condition: $i == $j+1 -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign elsif_match = ${i} = ${j} + 1;'
+            Replace: $i -> 2
+            Replace: $j -> 1
+            Replace vars: '	assign elsif_match = ${i} = ${j} + 1;' -> '	assign elsif_match = 2 = 1 + 1;'
+            Added output line: '	assign elsif_match = 2 = 1 + 1;'
+        Branch generated 1 lines
+        Skipping branch (previous condition was true)
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '1+1' -> 2
+After step: $j = 2
+Eval expr: '2<10' -> True
+Loop iteration #2, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 2}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '2%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 2}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 2' -> True
+        Evaluating condition: $i == $j -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign if_match = ${i} == ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 2
+            Replace vars: '	assign if_match = ${i} == ${j};' -> '	assign if_match = 2 == 2;'
+            Added output line: '	assign if_match = 2 == 2;'
+        Branch generated 1 lines
+        Skipping branch (previous condition was true)
+        Skipping branch (previous condition was true)
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '2+1' -> 3
+After step: $j = 3
+Eval expr: '3<10' -> True
+Loop iteration #3, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 3}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '3%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 3}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 3' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 3+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 3
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 3;'
+            Added output line: '	assign else_match = 2 != 3;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '3+1' -> 4
+After step: $j = 4
+Eval expr: '4<10' -> True
+Loop iteration #4, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 4}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '4%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 4}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 4' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 4+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 4
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 4;'
+            Added output line: '	assign else_match = 2 != 4;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '4+1' -> 5
+After step: $j = 5
+Eval expr: '5<10' -> True
+Loop iteration #5, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 5}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '5%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 5}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 5' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 5+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 5
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 5;'
+            Added output line: '	assign else_match = 2 != 5;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '5+1' -> 6
+After step: $j = 6
+Eval expr: '6<10' -> True
+Loop iteration #6, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 6}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '6%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 6}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 6' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 6+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 6
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 6;'
+            Added output line: '	assign else_match = 2 != 6;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '6+1' -> 7
+After step: $j = 7
+Eval expr: '7<10' -> True
+Loop iteration #7, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 7}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '7%3 + 100' -> 101
+    Assignment: $alu = 101 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 101, 'bru': 10, 'j': 7}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 101
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 101 ;'
+    Added output line: '   assign alu = 101 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 7' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 7+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 7
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 7;'
+            Added output line: '	assign else_match = 2 != 7;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '7+1' -> 8
+After step: $j = 8
+Eval expr: '8<10' -> True
+Loop iteration #8, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 8}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '8%3 + 100' -> 102
+    Assignment: $alu = 102 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 102, 'bru': 10, 'j': 8}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 102
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 102 ;'
+    Added output line: '   assign alu = 102 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 8' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 8+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 8
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 8;'
+            Added output line: '	assign else_match = 2 != 8;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '8+1' -> 9
+After step: $j = 9
+Eval expr: '9<10' -> True
+Loop iteration #9, condition '$j<$bru' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 9}
+    Processing line 0: '//:$alu = $j%3 + 100;'
+    Eval expr: '9%3 + 100' -> 100
+    Assignment: $alu = 100 (type: int)
+    Variables now: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 100, 'bru': 10, 'j': 9}
+    Processing line 1: 'assign alu = ${alu} ;'
+    Replace: $alu -> 100
+    Replace vars: '   assign alu = ${alu} ;' -> '   assign alu = 100 ;'
+    Added output line: '   assign alu = 100 ;'
+    Processing line 2: '//:if($i == $j) {'
+    Found IF/ELSIF/ELSE block
+    Processing IF block
+    IF condition: $i == $j
+    ELSIF condition: $i == $j+1
+    ELSE branch
+        Eval expr: '2 == 9' -> False
+        Evaluating condition: $i == $j -> False
+        Condition is False, skipping branch
+        Eval expr: '2 == 9+1' -> False
+        Evaluating condition: $i == $j+1 -> False
+        Condition is False, skipping branch
+        Eval expr: 'True' -> True
+        Evaluating condition: True -> True
+        Condition is True, executing branch
+            Processing line 0: 'assign else_match = ${i} != ${j};'
+            Replace: $i -> 2
+            Replace: $j -> 9
+            Replace vars: '	assign else_match = ${i} != ${j};' -> '	assign else_match = 2 != 9;'
+            Added output line: '	assign else_match = 2 != 9;'
+        Branch generated 1 lines
+    IF block processed, added 1 lines
+    Processing line 9: '//:}'
+    Processing line 10: '//:}'
+    Processing line 11: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+    Processing line 12: ''
+    Replace vars: '' -> ''
+    Added output line: ''
+Body generated 4 lines
+Eval expr: '9+1' -> 10
+After step: $j = 10
+Eval expr: '10<10' -> False
+FOR loop completed after 9 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10, 'j': 10}
+FOR block processed, added 36 lines
+Body generated 36 lines
+Eval expr: '2+1' -> 3
+After step: $i = 3
+Eval expr: '3<3' -> False
+FOR loop completed after 3 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+FOR block processed, added 108 lines
+Processing line 112: ''
+Replace vars: '  ' -> '  '
+Added output line: '  '
+Processing line 113: ''
+Replace vars: '  ' -> '  '
+Added output line: '  '
+Processing line 114: ''
+Replace vars: '  ' -> '  '
+Added output line: '  '
+Processing line 115: '//:}'
+Processing line 116: '//:}'
+Processing line 117: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 118: 'assign alu= ${alu}'
+Replace: $alu -> 5
+Replace vars: 'assign alu= ${alu}' -> 'assign alu= 5'
+Added output line: 'assign alu= 5'
+Processing line 119: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 120: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 121: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 122: '//:if($alu > $bru) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $alu > $bru
+ELSIF condition: $alu != $bru
+ELSE branch
+Eval expr: '5 > 10' -> False
+Evaluating condition: $alu > $bru -> False
+Condition is False, skipping branch
+Eval expr: '5 != 10' -> True
+Evaluating condition: $alu != $bru -> True
+Condition is True, executing branch
+Processing line 0: 'assign ${alu} != ${bru};'
+Replace: $alu -> 5
+Replace: $bru -> 10
+Replace vars: '   assign ${alu} != ${bru};' -> '   assign 5 != 10;'
+Added output line: '   assign 5 != 10;'
+Processing line 1: '//:   for($i=0;$i<5;$i=$i+1) {'
+Found FOR block
+FOR loop: $i = 0; $i<5; $i=$i+1
+Eval expr: '0' -> 0
+Initialized loop variable $i = 0
+Eval expr: '0<5' -> True
+Loop iteration #1, condition '$i<5' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 0, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: 'assign ${i}'
+Replace: $i -> 0
+Replace vars: '   assign ${i}' -> '   assign 0'
+Added output line: '   assign 0'
+Body generated 1 lines
+Eval expr: '0+1' -> 1
+After step: $i = 1
+Eval expr: '1<5' -> True
+Loop iteration #2, condition '$i<5' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 1, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: 'assign ${i}'
+Replace: $i -> 1
+Replace vars: '   assign ${i}' -> '   assign 1'
+Added output line: '   assign 1'
+Body generated 1 lines
+Eval expr: '1+1' -> 2
+After step: $i = 2
+Eval expr: '2<5' -> True
+Loop iteration #3, condition '$i<5' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 2, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: 'assign ${i}'
+Replace: $i -> 2
+Replace vars: '   assign ${i}' -> '   assign 2'
+Added output line: '   assign 2'
+Body generated 1 lines
+Eval expr: '2+1' -> 3
+After step: $i = 3
+Eval expr: '3<5' -> True
+Loop iteration #4, condition '$i<5' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 3, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: 'assign ${i}'
+Replace: $i -> 3
+Replace vars: '   assign ${i}' -> '   assign 3'
+Added output line: '   assign 3'
+Body generated 1 lines
+Eval expr: '3+1' -> 4
+After step: $i = 4
+Eval expr: '4<5' -> True
+Loop iteration #5, condition '$i<5' is True
+Loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 4, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+Processing line 0: 'assign ${i}'
+Replace: $i -> 4
+Replace vars: '   assign ${i}' -> '   assign 4'
+Added output line: '   assign 4'
+Body generated 1 lines
+Eval expr: '4+1' -> 5
+After step: $i = 5
+Eval expr: '5<5' -> False
+FOR loop completed after 5 iterations
+Final loop variables: {'width': 16, 'depth': 8, 'size': 16, 'name': 'alu', 'nam_q': ['alu', 'lsu', 'fsu'], 'i': 5, 'test': [[1, 2], [3, 4], [5, 6]], 'max': 3, 'cmp_a': 3, 'cmp_b': 5, 'alu': 5, 'bru': 10}
+FOR block processed, added 5 lines
+Branch generated 6 lines
+Skipping branch (previous condition was true)
+IF block processed, added 6 lines
+Processing line 139: '//:}'
+Processing line 140: '//:}'
+Processing line 141: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 142: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 143: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 144: '******************************************'
+Replace vars: '******************************************' -> '******************************************'
+Added output line: '******************************************'
+Processing line 145: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 146: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 147: '//:if($alu > $bru) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $alu > $bru
+ELSIF condition: $alu != $bru
+ELSE branch
+Eval expr: '5 > 10' -> False
+Evaluating condition: $alu > $bru -> False
+Condition is False, skipping branch
+Eval expr: '5 != 10' -> True
+Evaluating condition: $alu != $bru -> True
+Condition is True, executing branch
+Processing line 0: 'assign ${alu} != ${bru};'
+Replace: $alu -> 5
+Replace: $bru -> 10
+Replace vars: '   assign ${alu} != ${bru};' -> '   assign 5 != 10;'
+Added output line: '   assign 5 != 10;'
+Processing line 1: ''
+Replace vars: '   ' -> '   '
+Added output line: '   '
+Processing line 2: '//:if($alu > $bru) {'
+Found IF/ELSIF/ELSE block
+Processing IF block
+IF condition: $alu > $bru
+ELSIF condition: $alu != $bru
+ELSE branch
+Eval expr: '5 > 10' -> False
+Evaluating condition: $alu > $bru -> False
+Condition is False, skipping branch
+Eval expr: '5 != 10' -> True
+Evaluating condition: $alu != $bru -> True
+Condition is True, executing branch
+Processing line 0: 'assign ${alu} != ${bru};'
+Replace: $alu -> 5
+Replace: $bru -> 10
+Replace vars: '   assign ${alu} != ${bru};' -> '   assign 5 != 10;'
+Added output line: '   assign 5 != 10;'
+Branch generated 1 lines
+Skipping branch (previous condition was true)
+IF block processed, added 1 lines
+Processing line 9: '//:}'
+Processing line 10: '//:}'
+Processing line 11: ''
+Replace vars: '' -> ''
+Added output line: ''
+Branch generated 4 lines
+Skipping branch (previous condition was true)
+IF block processed, added 4 lines
+Processing line 172: '//:}'
+Processing line 173: '//:}'
+Processing line 174: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 175: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 176: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 177: ''
+Replace vars: '' -> ''
+Added output line: ''
+Processing line 178: 'finish'
+Replace vars: 'finish ' -> 'finish '
+Added output line: 'finish '
+Processing line 179: ''
+Replace vars: '' -> ''
+Added output line: ''
+Code generation completed

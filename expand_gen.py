@@ -21,35 +21,26 @@ class CodeGenerator: #recursion process the line
             step = "    " * self.debug_tab
             self.debug_log.append(f"{step}{message}")
 
-    def eval_expr(self, expr, local_vars=None):
-        def replace_logical_ops(expr_str):
+    def eval_expr(self, expr, local_vars=None): #do opc local_var = {"wid":16,"dep":8}
+        def replace_logical_ops(expr_str): #replace sv op to py op #others e.g. +/-/*/% py already support
             expr_str = re.sub(r'&&', ' and ', expr_str)
             expr_str = re.sub(r'\|\|', ' or ', expr_str)
             expr_str = re.sub(r'!(?!=)', ' not ', expr_str) # ! can replace != can't replace
             expr_str = re.sub(r'~', ' not ', expr_str)
             return expr_str
         if local_vars is None:
-            local_vars = self.variables
+            local_vars = self.variables #get var value
         try:
-            expr = replace_logical_ops(expr)
-            result = eval(expr, {"__builtins__": __builtins__}, local_vars) #direct calc
+            expr = re.sub(r'\$\{?(\w+)\}?', lambda m: str(local_vars.get(m.group(1), "0")), expr) #replace ${var} to value 
+            expr = replace_logical_ops(expr) #replace && to and 
+            result = eval(expr, {"__builtins__": __builtins__}, local_vars) #do py op
             self.log(f"Eval expr: '{expr}' -> {result}")
             return result
-        except (NameError, SyntaxError):
-            expr = re.sub(r'\$\{?(\w+)\}?', 
-                        lambda m: str(local_vars.get(m.group(1), "0")), 
-                        expr) #replace ${var} to $var
-            try:
-                #return eval(expr, {"__builtins__": None}, {})
-                expr = replace_logical_ops(expr)
-                result = eval(expr, {"__builtins__": __builtins__}, {})
-                self.log(f"Eval expr (after sub): '{expr}' -> {result}")
-                return result
-                
-            except Exception as e:
-                error_msg = f"Error evaluating expression '{expr}': {str(e)}"
-                self.log(f"ERROR: {error_msg}")
-                sys.exit(error_msg)
+        except Exception as e:
+            error_msg = f"Error evaluating expression '{expr}': {str(e)}"
+            self.log(f"ERROR: {error_msg}")
+            sys.exit(error_msg)
+
 
     def replace_vars(self, line, local_vars=None):
         if local_vars is None:
@@ -79,21 +70,13 @@ class CodeGenerator: #recursion process the line
 
 
 
-    def process_assignment(self, directive):
+    def process_assignment(self, directive): #get variable 
         match = re.match(r'\$(\w+)\s*=\s*(.+?)(;?)$', directive)
         if match:
             var_name = match.group(1)
             expr = match.group(2).rstrip(';')
             try:
-                if expr.startswith('[') and expr.endswith(']'): #try parse python list
-                    value = ast.literal_eval(expr)
-                else:
-                    value = self.eval_expr(expr)
-            except (ValueError, SyntaxError):
-                expr = re.sub(r'\$\{?(\w+)\}?', 
-                             lambda m: str(self.variables.get(m.group(1), "0")), 
-                             expr)
-                value = self.eval_expr(expr) #normal variable
+                value = self.eval_expr(expr) #e.g. $width = 2*8 -> value = 16
             except Exception as e:
                 error_msg = f"Error in assignment '{directive}': {str(e)}"
                 self.log(f"ERROR: {error_msg}")
@@ -101,14 +84,6 @@ class CodeGenerator: #recursion process the line
             self.variables[var_name] = value
             self.log(f"Assignment: ${var_name} = {value} (type: {type(value).__name__})")
             self.log(f"Variables now: {self.variables}")
-            #version1:
-            #try:
-            #    value = ast.literal_eval(expr)
-            #except (ValueError, SyntaxError):
-            #    expr = re.sub(r'\$\{?(\w+)\}?', 
-            #                 lambda m: str(self.variables.get(m.group(1), "0")), 
-            #                 expr)
-            #    value = self.eval_expr(expr)
             self.variables[var_name] = value #overwrite local variable
         else:
             error_msg = f"Error in variable assignment: {directive}"
@@ -121,11 +96,11 @@ class CodeGenerator: #recursion process the line
         while index < len(lines):
             stripped = lines[index].strip()
             self.log(f"Processing line {index}: '{stripped}'")
-            if stripped.startswith("//:$"): #process local variable
+            if stripped.startswith("//:$"): #process variable assign
                 self.process_assignment(stripped[3:].strip())
                 index += 1
                 continue
-            if stripped.startswith("//:") and stripped[3:].strip().startswith("for("):
+            if stripped.startswith("//:") and stripped[3:].strip().startswith("for("): #process for 
                 self.log("Found FOR block")
                 for_block = ForBlock() #process for block
                 index, for_code = for_block.parse(self, lines, index)
@@ -161,24 +136,21 @@ class CodeGenerator: #recursion process the line
 
 class ForBlock: #for block process
     def parse(self, parent_generator, lines, start_index): #parse for block return line num and generate code
-        directive = lines[start_index].strip()[3:].strip()
-        match = re.match(
-            r'for\(\$(\w+)\s*=\s*([^;]+);\s*([^;]+);\s*([^)]+)\)\s*\{', 
-            directive
-        ) #get for control parameters
+        cmd = lines[start_index].strip()[3:].strip()
+        match = re.match(r'for\(\$(\w+)\s*=\s*([^;]+);\s*([^;]+);\s*([^)]+)\)\s*\{', cmd) #get for control parameters
         if not match:
-            error_msg = f"Invalid for loop directive: {directive}"
+            error_msg = f"Invalid for loop cmd: {cmd}"
             parent_generator.log(f"ERROR: {error_msg}")
             raise ValueError(error_msg)
         
-        var_name = match.group(1)
-        init_expr = match.group(2).strip()
-        cond_expr = match.group(3).strip()
-        step_expr = self.normalize_step_expr(match.group(4).strip())
+        var_name = match.group(1) #i
+        init_expr = match.group(2).strip() #0
+        cond_expr = match.group(3).strip() #$i<xxx
+        step_expr = self.normalize_step_expr(match.group(4).strip()) #$i=$i+1
         parent_generator.log(f"FOR loop: ${var_name} = {init_expr}; {cond_expr}; {step_expr}")
         generator = CodeGenerator(parent_vars=parent_generator.variables,
                                   debug=parent_generator.debug) #child generator,variable from parent generator
-        generator.debug_log = parent_generator.debug_log  # 共享调试日志
+        generator.debug_log = parent_generator.debug_log
         generator.debug_tab = parent_generator.debug_tab + 1
         generator.variables[var_name] = generator.eval_expr(init_expr) #for(i=0;i<10;i++) get i=0 value
         generator.log(f"Initialized loop variable ${var_name} = {generator.variables[var_name]}")
@@ -188,24 +160,24 @@ class ForBlock: #for block process
         
         while index < len(lines) and depth > 0:
             stripped = lines[index].strip()
-            if stripped.endswith('{') and stripped.startswith('//:'): #get next for/if block inner 
+            if stripped.endswith('{') and stripped.startswith('//:'): #for block inner has other if/for blk
                 depth += 1
-            if stripped == "//:}":  #get for block end 
+            if stripped == "//:}":  #a block has end (maybe inner or outside)
                 depth -= 1
-                if depth == 0:
+                if depth == 0: #the outside block has end 
                     index += 1
                     break
-            body_lines.append(lines[index])
+            body_lines.append(lines[index]) #get the for block all info(include inner nested block)
             index += 1
         output = []
         loop_cnt = 0
-        while generator.eval_expr(cond_expr): #process for body block 
+        while generator.eval_expr(cond_expr): #process for body block (if meet i<xxx)
             loop_cnt += 1
             generator.log(f"Loop iteration #{loop_cnt}, condition '{cond_expr}' is True")
             generator.log(f"Loop variables: {generator.variables}")
             body_generator = CodeGenerator(parent_vars=generator.variables,
                                           debug=parent_generator.debug)
-            body_generator.debug_log = parent_generator.debug_log  # 共享调试日志
+            body_generator.debug_log = parent_generator.debug_log 
             body_generator.debug_tab = generator.debug_tab + 1
             body_generator.process_lines(body_lines) #maybe for inner has for block 
             output.extend(body_generator.output_lines)
@@ -218,7 +190,7 @@ class ForBlock: #for block process
         parent_generator.debug_tab = parent_generator.debug_tab -1 
         return index, output
     
-    def normalize_step_expr(self, expr): #for support i++ i+=1
+    def normalize_step_expr(self, expr): #for change i++ i+=1 into i=i+1
         if re.match(r'^\$?(\w+)\+\+$', expr): #support i++/i--
             return f"{expr.replace('++', '')} = {expr.replace('++', '')} + 1" #i++ to i=i+1
         if re.match(r'^\$?(\w+)--$', expr):
@@ -239,102 +211,74 @@ class ForBlock: #for block process
             generator.variables[var_name] = generator.eval_expr(step_expr)
 
 
-
 class IfBlock:
     def parse(self, parent_generator, lines, start_index): #process(if/elsif/else)
         branches = []
         current_branch = None
         index = start_index
         parent_generator.log("Processing IF block")
-        found_end = False
-        
+        depth = 1  #nest depth
         while index < len(lines):
             stripped = lines[index].strip()
             cmd = stripped[3:].strip() if stripped.startswith("//:") else ""
-            if cmd.startswith("if(") or cmd.startswith("elsif(") or cmd.startswith("else"):
-                if current_branch:
-                    branches.append(current_branch) #if current branch has do it
-                    current_branch = None
-                #create new branch 
-                if cmd.startswith("if("):#if branch
-                    match = re.match(r'if\((.+)\)\s*\{', cmd)
-                    if not match:
-                        error_msg = f"Invalid if directive: {cmd}"
-                        parent_generator.log(f"ERROR: {error_msg}")
-                        raise ValueError(error_msg)
-                    condition = match.group(1).strip()
-                    current_branch = {"condition": condition, "lines": []}
-                    parent_generator.log(f"IF condition: {condition}")
-                
-                elif cmd.startswith("elsif("): #elsif branch
-                    match = re.match(r'elsif\((.+)\)\s*\{', cmd)
-                    if not match:
-                        error_msg = f"Invalid elsif directive: {cmd}"
-                        parent_generator.log(f"ERROR: {error_msg}")
-                        raise ValueError(error_msg)
-                    condition = match.group(1).strip()
-                    current_branch = {"condition": condition, "lines": []}
-                    parent_generator.log(f"ELSIF condition: {condition}")
-                
-                elif cmd.startswith("else"):
-                    current_branch = {"condition": "True", "lines": []}
-                    parent_generator.log("ELSE branch")
-                index += 1 #mov to next lane to collect info 
-                continue
-            
-            #branch is ok
-            if stripped == "//:}":
-                if current_branch:
-                    branches.append(current_branch)
-                    current_branch = None
-                parent_generator.log("End of IF block")
-                found_end = True
-                index += 1 
-                break
-            if current_branch is not None: #collect branch
-                # has nested info 
-                if stripped.startswith("//:") and (
-                    stripped[3:].strip().startswith("for(") or 
-                    stripped[3:].strip().startswith("if(") or 
-                    stripped[3:].strip().startswith("elsif(")):
-                    nested_depth = 1
-                    current_branch["lines"].append(lines[index])
+            if current_branch is not None:
+                if cmd.startswith("if(") or cmd.startswith("for("):
+                    current_branch["lines"].append(lines[index]) #new nest block
+                    depth += 1
                     index += 1
-                    #collect nested info 
-                    while index < len(lines) and nested_depth > 0:
-                        nested_stripped = lines[index].strip()
-                        #nested begin 
-                        if nested_stripped.startswith("//:") and (
-                            nested_stripped[3:].strip().startswith("for(") or 
-                            nested_stripped[3:].strip().startswith("if(") or 
-                            nested_stripped[3:].strip().startswith("elsif(")
-                        ):
-                            nested_depth += 1
-                        #nested end
-                        if nested_stripped == "//:}":
-                            nested_depth -= 1
+                elif cmd.startswith("elsif(") or cmd.startswith("else"):
+                    if(depth == 1):
+                        branches.append(current_branch) #one condition ok
+                        if(cmd.startswith("elsif(")): #generate new elsif condition
+                            match = re.match(r'elsif\((.+)\)\s*\{', cmd)
+                            if not match:
+                                error_msg = f"Invalid elsif directive: {cmd}"
+                                parent_generator.log(f"ERROR: {error_msg}")
+                                raise ValueError(error_msg)
+                            condition = match.group(1).strip()
+                            current_branch = {"condition": condition, "lines": []}
+                            parent_generator.log(f"ELSIF condition: {condition}")                            
+                        else : #generate new else condition
+                            current_branch = {"condition": "True", "lines": []}
+                            parent_generator.log("ELSE branch")
+                        index += 1 #mov to next lane to collect info                         
+                    else : #nested block just append
+                        current_branch["lines"].append(lines[index]) #append normal lane
+                        depth += 1
+                        index += 1
+                elif stripped == "//:}":
+                    depth -= 1
+                    if(depth == 0): #parent block is ok
+                        index += 1
+                        branches.append(current_branch)
+                        break
+                    else : #nested block just append
                         current_branch["lines"].append(lines[index])
                         index += 1
-                    if nested_depth > 0: #check nested is fine
-                        error_msg = f"Unclosed nested block in if branch starting at line {start_index}"
+                else : #normal lane
+                    current_branch["lines"].append(lines[index])
+                    index += 1
+            else:
+                if cmd.startswith("if(") or cmd.startswith("elsif(") or cmd.startswith("else"):
+                    if(cmd.startswith("elsif(") or cmd.startswith("else")) : #can't elsif else begin 
+                        error_msg = f"Error in variable assignment: {lines[index]}"
                         parent_generator.log(f"ERROR: {error_msg}")
-                        raise ValueError(error_msg)
-                    
+                        sys.exit(error_msg)
+                    else: #if branch
+                        match = re.match(r'if\((.+)\)\s*\{', cmd)
+                        if not match:
+                            error_msg = f"Invalid if directive: {cmd}"
+                            parent_generator.log(f"ERROR: {error_msg}")
+                            raise ValueError(error_msg)
+                        condition = match.group(1).strip()
+                        current_branch = {"condition": condition, "lines": [],"done":0,"type":"IF"}
+                        parent_generator.log(f"IF condition: {condition}")            
+                    index += 1 #mov to next lane to collect info 
                     continue
-                current_branch["lines"].append(lines[index]) #append normal lane
-            
-            index += 1
-        if current_branch:
-            branches.append(current_branch)
-        
-        #check end 
-        if not found_end:
-            error_msg = f"Missing '//:}}' for if block starting at line {start_index}"
-            parent_generator.log(f"ERROR: {error_msg}")
-            raise ValueError(error_msg)
-        if not branches:
-            parent_generator.log("No branches found in IF block")
-            return index, []
+                else:
+                    error_msg = f"Error in variable assignment: {lines[index]}"
+                    parent_generator.log(f"ERROR: {error_msg}")
+                    sys.exit(error_msg)
         #process branch 
         generator = CodeGenerator(parent_vars=parent_generator.variables,
                                   debug=parent_generator.debug)
@@ -342,13 +286,11 @@ class IfBlock:
         generator.debug_tab = parent_generator.debug_tab + 1
         executed = False
         output = []
-        
         for branch in branches:
             if not executed:
                 condition = branch["condition"]
                 condition_result = generator.eval_expr(condition)
                 generator.log(f"Evaluating condition: {condition} -> {condition_result}")
-                
                 if condition_result:
                     executed = True
                     generator.log("Condition is True, executing branch")
@@ -367,10 +309,10 @@ class IfBlock:
         
         if not executed:
             generator.log("No branch executed in IF block")
-        
         parent_generator.variables.update(generator.variables)
         parent_generator.debug_tab = generator.debug_tab - 1
         return index, output
+
 
 
 def process_file(input_path, output_path, global_vars=None, debug=False):#progress the file
