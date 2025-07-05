@@ -3,6 +3,163 @@ import sys
 import ast
 import os
 import argparse
+import traceback
+
+class SVMacroParser: #get include path info 
+    def __init__(self, include_paths=None):
+        self.include_paths = set()
+        self.macros = {}
+        self.processed_files = set()
+        self.cond_stack = []
+        self.current_active = True
+        self.include_paths.add(os.getcwd())
+        if include_paths:
+            if isinstance(include_paths, (list, tuple)):
+                self.include_paths.update(include_paths)
+            else:
+                self.include_paths.add(include_paths)
+
+    def parse_file(self, filename):
+        abs_file = self._resolve_path(filename)
+        if not abs_file:
+            print(f"Warning: Invalid File '{filename}' ")
+        if abs_file in self.processed_files: #file have repeat
+            return self.macros
+        self.processed_files.add(abs_file)
+        try:
+            with open(abs_file, 'r') as f:
+                content = f.read()
+        except Exception as e:
+            print(f"Error reading file {abs_file}: {str(e)}")
+            return self.macros
+        lines = self._preprocess_content(content)
+        self._process_lines(lines)
+        if not self.cond_stack:
+            self._expand_macros()
+        return self.macros
+
+
+    def _resolve_path(self, filename):
+        filename = os.path.expandvars(filename)
+        if os.path.isabs(filename) and os.path.isfile(filename):
+            filename = os.path.abspath(filename)
+            self.include_paths.add(os.path.dirname(filename))
+            return os.path.normpath(filename)
+        for path in self.include_paths:
+            abs_path = os.path.join(path, filename)
+            if os.path.isfile(abs_path):
+                abs_path = os.path.abspath(abs_path)
+                self.include_paths.add(os.path.dirname(abs_path))
+                return os.path.normpath(abs_path)
+        print(f"Warning: Invalid File '{filename}' ")
+        return None
+
+    def _preprocess_content(self, content):
+        content = re.sub(r'/\*.*?\*/', '', content, flags=re.DOTALL) #remove comment
+        content = re.sub(r'//.*$', '', content, flags=re.MULTILINE) #remove comment
+
+        lines = []
+        current_line = ""
+        for line in content.splitlines():
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if current_line:
+                if current_line.endswith('\\'): #support cross line define
+                    current_line = current_line.rstrip('\\').rstrip() + ' ' + stripped
+                else:
+                    lines.append(current_line)
+                    current_line = stripped
+            else:
+                current_line = stripped
+            if not current_line.endswith('\\'):
+                lines.append(current_line)
+                current_line = ""
+        if current_line:
+            lines.append(current_line)
+        return lines
+
+    def _expand_macros(self):
+        original_macros = self.macros.copy()
+        expanding_stack = []
+        def expand_value(value, macro_name):
+            if macro_name in expanding_stack:
+                print(f"Error: Circular macro reference detected in '{macro_name}'")
+                return value
+            expanding_stack.append(macro_name)
+            def replace_macro(match):
+                ref_name = match.group(1)
+                if '(' in match.group(0): #if macro has () keep it
+                    return match.group(0)
+                if ref_name in original_macros:
+                    return expand_value(original_macros[ref_name], ref_name)
+                else:
+                    return match.group(0)
+            pattern = r'`(\w+)(\([^)]*\))?'
+            expanded = re.sub(pattern, replace_macro, value)
+            expanding_stack.pop()
+            return expanded
+        for name, value in self.macros.items():
+            self.macros[name] = expand_value(value, name)
+
+
+    def _process_lines(self, lines):
+        for line in lines:
+            if not line.startswith('`'):
+                continue
+            split_line = line.split(maxsplit=1) #[`define, ABC, 1]
+            cmd = split_line[0][1:] #define 
+            args = split_line[1].strip() if len(split_line) > 1 else ""
+            if cmd == "include" and self.current_active:
+                match = re.search(r'["<](.+?)[">]', args)#re.findall(r'`include\s+["<](.*?)[">]', content)
+                if match:
+                    include_file = match.group(1).strip('"')
+                    self._process_include(include_file)
+                else:
+                    print(f"Warning: Invalid include syntax: {line}")
+            elif cmd in ("ifdef", "ifndef"):
+                macro_name = args.split()[0] if args else ""
+                if not macro_name:
+                    print(f"Warning: Missing macro name in {line}")
+                    continue
+                cond = (macro_name in self.macros) if cmd == "ifdef" else (macro_name not in self.macros)
+                self.cond_stack.append((self.current_active, cond, False))
+                self.current_active = self.current_active and cond
+            elif cmd == "else":
+                if not self.cond_stack:
+                    print(f"Warning: `else without matching `ifdef/`ifndef: {line}")
+                    continue
+                outer_active, cond, else_seen = self.cond_stack[-1]
+                if else_seen:
+                    print(f"Warning: Multiple `else for same `ifdef/`ifndef: {line}")
+                else:
+                    self.cond_stack[-1] = (outer_active, cond, True)
+                    self.current_active = outer_active and not cond
+            elif cmd == "endif":
+                if not self.cond_stack:
+                    print(f"Warning: `endif without matching `ifdef/`ifndef: {line}")
+                else:
+                    self.current_active, _, _ = self.cond_stack.pop()
+            elif self.current_active and cmd == "define":
+                match = re.match(r'^\s*(\w+)(?:\s*\(([^)]*)\))?\s*(.*)$', args)
+                if not match:
+                    print(f"Warning: Invalid macro definition: {line}")
+                    continue
+                macro_name = match.group(1)
+                params = match.group(2).strip() if match.group(2) else None
+                macro_value = match.group(3).strip()
+                if params:
+                    macro_value = params + " "+macro_value
+                if macro_name in self.macros:
+                    print(f"Warning: '{macro_name}' redefined from '{self.macros[macro_name]}' to '{macro_value}'")
+                self.macros[macro_name] = macro_value #all_macros.update({})
+
+
+    def _process_include(self, filename):
+        abs_path = self._resolve_path(filename)
+        if abs_path and (abs_path not in self.processed_files): #not file and not process before
+            self.parse_file(abs_path)
+
 
 class CodeGenerator: #recursion process the line 
     def __init__(self, parent_vars=None, global_vars=None,debug=False):
@@ -11,6 +168,7 @@ class CodeGenerator: #recursion process the line
             self.variables.update(global_vars)
         if parent_vars:
             self.variables.update(parent_vars)
+        self.macro_parse = SVMacroParser()
         self.output_lines = []  #output code 
         self.debug = debug 
         self.debug_log = []
@@ -48,7 +206,7 @@ class CodeGenerator: #recursion process the line
         def replace_match(match): #for support list index list[x]
             var_name = match.group(1)
             indices_str = match.group(2)
-            value = local_vars.get(var_name, 0)
+            value = local_vars.get(var_name, "ERROR")
             if indices_str: #process list[x]
                 indices = re.findall(r'\[([^\]]+)\]', indices_str)
                 for index_expr in indices:
@@ -81,6 +239,10 @@ class CodeGenerator: #recursion process the line
                 error_msg = f"Error in assignment '{directive}': {str(e)}"
                 self.log(f"ERROR: {error_msg}")
                 sys.exit(error_msg)
+            if(var_name == "include"):
+                macro_variable = self.macro_parse.parse_file(expr.strip('"'))
+                print((f"FILE {expr}: GET VARIDABLE {macro_variable}"))
+                self.variables.update(macro_variable)
             self.variables[var_name] = value
             self.log(f"Assignment: ${var_name} = {value} (type: {type(value).__name__})")
             self.log(f"Variables now: {self.variables}")

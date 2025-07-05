@@ -1,7 +1,11 @@
 
 //DEMO variable
+
 wire [16-1:0] data = 16'b0;
 logic [31:0] buffer[8][16];
+
+wire [9-1:0] rid;
+wire [9-1:0] rid;
 
 
 wire alu_vld = 0;

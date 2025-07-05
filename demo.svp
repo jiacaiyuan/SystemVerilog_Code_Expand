@@ -3,8 +3,13 @@
 //:$width = 2*8
 //:$depth = 8;
 //:$size = 2*$depth;
+
 wire [${width}-1:0] data = ${width}'b0;
 logic [31:0] buffer[${depth}][${size}];
+
+//:$include = "./macro_demo.svh"
+wire [${RID_WIDTH}-1:0] rid;
+wire [${RID_MSB}:0] rid;
 
 
 //:$name="alu"
