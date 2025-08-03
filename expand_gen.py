@@ -299,7 +299,7 @@ class CodeGenerator: #recursion process the line
 class ForBlock: #for block process
     def parse(self, parent_generator, lines, start_index): #parse for block return line num and generate code
         cmd = lines[start_index].strip()[3:].strip()
-        match = re.match(r'for\(\$(\w+)\s*=\s*([^;]+);\s*([^;]+);\s*([^)]+)\)\s*\{', cmd) #get for control parameters
+        match = re.match(r'for\(\s*\$(\w+)\s*=\s*([^;]+);\s*([^;]+);\s*([^)]+)\)\s*\{', cmd) #get for control parameters
         if not match:
             error_msg = f"Invalid for loop cmd: {cmd}"
             parent_generator.log(f"ERROR: {error_msg}")
@@ -576,3 +576,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
